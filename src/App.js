@@ -86,9 +86,10 @@ export default class App extends Component {
     //console.log(ss.GetCollision(ss2));
     //console.log(ss);
 
-    var galaxie = new Galaxie(new Position2D(0, 0), 5, "D2", [], "red");
+    var galaxie = new Galaxie(new Position2D(10, 10), 5, "D2", [], "red");
     galaxie.DrawCentre(this.scene);
-    galaxie.DrawBranchSS(this.scene, new Position2D(8, 4), 500, 1);
+    galaxie.DrawBranchSS(this.scene, new Position2D(8, 4), 100, 1);
+    
 
 
 
@@ -310,8 +311,6 @@ class Galaxie {
     var cmaterial = new THREE.MeshBasicMaterial({ color: this.couleurLight });
     var centre = new THREE.Mesh(cgeometry, cmaterial);
     scene.add(centre);
-    centre.translateX(this.centre2D.x);
-    centre.translateY(this.centre2D.y);
     return centre;
   }
 
@@ -358,7 +357,7 @@ class Galaxie {
     var tb = new ToolBox();
     var curveTab = [];
     for (var j = 1; j < angleSize * 4; j = j + 2) {
-      var posL = tb.generateSpiralePoint(j, startPos);
+      var posL = tb.generateSpiralePoint(j, new Position2D(startPos.x + this.centre2D.x , startPos.y + this.centre2D.y));
       curveTab.push(new Vector2(posL.x, posL.y));
     }
     var geometry = new THREE.BufferGeometry().setFromPoints(curveTab);
