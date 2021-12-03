@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import './App.css';
 import * as THREE from "three";
 import { Vector2 } from "three";
+import Header from './components/Header';
+import Footer from './components/Footer';
 import plt1 from "./texturePlanete/plt1.jpg";
 import plt2 from "./texturePlanete/plt2.jpg";
 import plt3 from "./texturePlanete/plt3.jpg";
@@ -457,7 +459,10 @@ export default class App extends Component {
 
   render() {
     return (
-      <div ref={ref => (this.mount = ref)} ></div>
+      <div ref={ref => (this.mount = ref)} >
+        <Header />
+        <Footer />
+      </div>
     )
   }
 

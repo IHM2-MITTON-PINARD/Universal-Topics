@@ -1,0 +1,47 @@
+.header{
+    display: grid;
+    position: absolute;
+    grid-template-columns: repeat(12,1fr);
+    grid-template-rows:  1fr 0.4fr;
+    background-color: rgb(60, 60, 87);
+}
+
+.logo{
+    align-self: end;
+    height: 80%;
+    grid-column : 2;
+    grid-row :1; 
+}
+
+.titre{
+    text-align: center;
+    height: 20%;
+    margin : none;
+    padding : none;
+    align-self: center;
+    grid-column-start : 6;
+    grid-column-end :8;
+    grid-row :1; 
+}
+
+.id{
+    align-self: start;
+    height: 30%;
+    grid-column-start : 11;
+    grid-column-end :11;
+    grid-row :1; 
+}
+.mdp{
+    align-self: end;
+    height: 30%;
+    grid-column-start : 11;
+    grid-column-end :11;
+    grid-row :1; 
+}
+.connect{
+    align-self: center;
+    height: 60%;
+    grid-column-start : 11;
+    grid-column-end :11;
+    grid-row :2; 
+}
