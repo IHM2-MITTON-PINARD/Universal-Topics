@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useState } from "react";
 import './Header.css';
 import logo from '../logo.svg';
 
 
-function Header() {
+
+
+function Header(props) {
+
+
+
+  const [idval, setId] = useState("");
+  const [mdpval, setMdp] = useState("");
+
+  const [display,setD] = useState("none");
+  const [display2,setD2] = useState('visible');
+
+  const Headline = (id,mdp) => {
+    if(mdp==="root" && id === "root"){
+      console.log("tamerelapute");
+      setD("");
+      setD2("hidden")
+    }
+  };
+  
   return (
-    <div className="header">
-      <img className='logo' src={logo} />
+    <div className="header" style={{display : props.display}}>
+      <a href=""  className='logo' ><img className='imglogo' src={logo} /></a>
       <h1 className='titre'>Universal Topic</h1>
-      <input className='id' type="text" value="identifiant"/>
-      <input className="mdp" type="text" value="mdp" />
-      <input className="connect" type ="button" value="se connecter" />
+      <input style={{visibility:display2}} className='id' type="text" placeholder="identifiant" value={idval} onChange={e => setId(e.target.value)} />
+      <input style={{visibility:display2}} className="mdp" type="text" placeholder="mdp" value={mdpval} onChange={e => setMdp(e.target.value)} />
+      <input style={{visibility:display2}} className="connect" type ="button" value="se connecter" onClick={() => { Headline(idval,mdpval)} }/>
+      <p style={{display:display}} className="faked" >Bonjour root</p>
     </div>
   );
 }

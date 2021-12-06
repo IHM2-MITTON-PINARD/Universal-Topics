@@ -2,13 +2,15 @@
     display: grid;
     position: absolute;
     grid-template-columns: repeat(12,1fr);
-    grid-template-rows:  1fr 0.2fr 0.5fr;
-    background-color: rgb(60, 60, 87);
+    grid-template-rows:  1fr 0.5fr;
+    background:linear-gradient( #9198e5,#2f2a5e 70%);
     width:100%;
     bottom:0;
+    font-family: 'Space Mono';
 }
 
 .btn1{
+    font-family: 'Space Mono';
     align-self: end;
     height: 60%;
     grid-column-start : 2;
@@ -17,6 +19,7 @@
 }
 
 .btn2{
+    font-family: 'Space Mono';
     align-self: end;
     height: 60%;
     grid-column-start : 11;
@@ -32,16 +35,3 @@
     grid-row :1; 
 }
 
-.viz2{
-    align-self: center;
-    text-align: center;
-    grid-column : 6;
-    grid-row :2; 
-}
-
-.viz3{
-    align-self: center;
-    text-align: center;
-    grid-column : 7;
-    grid-row :2; 
-}

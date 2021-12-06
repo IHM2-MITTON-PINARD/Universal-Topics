@@ -26,32 +26,35 @@ class Views {
     this.Alight = Alight;
     this.obj = this.initObj();
     this.futurObj = "";
-    this.oldObj="";
+    this.wayInsideObj = [];
+    this.oldObj = "";
   }
 
   reinitView(layer) {
     this.scene.clear();
     this.layer = layer;
     this.oldObj = this.obj;
+    this.wayInsideObj.push(this.obj);
     this.obj = this.downObj();
   }
 
-  reinitViewUp(layer){
+  reinitViewUp(layer) {
     this.scene.clear();
     this.layer = layer;
     this.obj = this.upObj();
   }
 
-  upObj(){
+  upObj() {
     if (this.layer === "univers") {
-      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
+      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red","politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red","ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red","informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red","gaming")]);
       univers.initUnivers(this.scene);
       this.camera.position.z = 2000;
       this.Alight.intensity = 0.4;
       this.scene.add(this.Alight);
       return univers;
     } else if (this.layer === "galaxie") {
-      var galaxie = this.oldObj;
+      var galaxie = this.wayInsideObj[this.wayInsideObj.length - 1];
+      this.wayInsideObj = this.wayInsideObj.slice(0, this.wayInsideObj.length - 1);
       galaxie.DrawCentre(this.scene);
       galaxie.DrawBranchSS(this.scene, new Position2D(0, -0), 300, 1);
       this.camera.position.z = 800;
@@ -61,7 +64,8 @@ class Views {
       this.scene.add(this.Alight);
       return galaxie;
     } else if (this.layer === "systemeSolaire") {
-      var ss = this.oldObj;
+      var ss = this.wayInsideObj[this.wayInsideObj.length - 1];
+      this.wayInsideObj = this.wayInsideObj.slice(0, this.wayInsideObj.length - 1);
       ss.DrawSystemeSolaire(this.scene);
       this.camera.position.z = 200;
       this.camera.position.x = ss.centre2D.x;
@@ -69,14 +73,12 @@ class Views {
       this.Alight.intensity = 0.4;
       this.scene.add(this.Alight);
       return ss;
-    } else {
-      return "ntm";
     }
   }
 
   downObj() {
     if (this.layer === "univers") {
-      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
+      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red","politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red","ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red","informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red","gaming")]);
       univers.initUnivers(this.scene);
       this.camera.position.z = 2000;
       this.Alight.intensity = 0.4;
@@ -107,27 +109,25 @@ class Views {
       planete.position.y = 0;
       planete.position.z = 0;
       this.scene.add(planete);
-      this.camera.position.x = 0;
+      this.camera.position.x = -10;
       this.camera.position.y = 0;
       this.camera.position.z = 50;
       this.Alight.intensity = 1;
       this.scene.add(this.Alight);
       return planete;
-    } else {
-      return "ntm";
     }
   }
 
   initObj() {
     if (this.layer === "univers") {
-      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
+      var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red","politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red","ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red","informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red","gaming")]);
       univers.initUnivers(this.scene);
       this.camera.position.z = 2000;
       this.Alight.intensity = 0.4;
       this.scene.add(this.Alight);
       return univers;
     } else if (this.layer === "galaxie") {
-      var galaxie = new Galaxie(new Position2D(0, 0), 5, "D2", [], "red");
+      var galaxie = new Galaxie(new Position2D(0, 0), 5, "D2", [], "red","random");
       galaxie.DrawCentre(this.scene);
       galaxie.DrawBranchSS(this.scene, new Position2D(0, -0), 300, 1);
       this.camera.position.z = 800;
@@ -135,20 +135,21 @@ class Views {
       this.scene.add(this.Alight);
       return galaxie;
     } else if (this.layer === "systemeSolaire") {
-      var tabp = [new Planete(new ToolBox().generateRandomColor(), 15, 0.2, 1), new Planete(new ToolBox().generateRandomColor(), 25, 0.4, 3), new Planete(new ToolBox().generateRandomColor(), 34, 0.1, 1), new Planete(new ToolBox().generateRandomColor(), 49, 0.8, 1), new Planete(new ToolBox().generateRandomColor(), 59, 0.6, 5),];
-      var ss = new SystemeSolaire("sun", new Position2D(0, 0), tabp, "yellow", 0.2);
+      var tabp = [new Planete(new ToolBox().generateRandomColor(), 15, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 25, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 34, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 49, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 59, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"),];
+      var ss = new SystemeSolaire("sun", new Position2D(0, 0), tabp, "yellow", 0.2,'test');
       ss.DrawSystemeSolaire(this.scene);
       this.camera.position.z = 200;
       this.Alight.intensity = 0.4;
       this.scene.add(this.Alight);
       return ss;
     } else if (this.layer === "planete") {
-      var planete = new Planete(new ToolBox().generateRandomColor(), 0, 0.2, 1);
+      var planete = new Planete(new ToolBox().generateRandomColor(), 0, 0.2, 1,"unknown");
       planete.DrawPlanete(this.scene);
       this.camera.position.z = 20;
+      this.camera.position.x =10;
       this.Alight.intensity = 1;
       this.scene.add(this.Alight);
-      return planete;
+      return planete.planete;
     } else {
       return "ntm";
     }
@@ -166,6 +167,29 @@ class Views {
 
 export default class App extends Component {
 
+  constructor(props) { 
+    super(props); 
+    this.state = { display: "", currentObj: "univers" };
+    this.scene = new THREE.Scene();
+    this.scene.background = "red";
+  }
+
+
+  view = '';
+
+  childToParent = (childData) => {
+    if (childData) {
+      if (this.view.layer !== "univers") {
+        if (this.view.layer === "galaxie") {
+          this.view.reinitViewUp("univers");
+        } else if (this.view.layer === "systemeSolaire") {
+          this.view.reinitViewUp("galaxie");
+        } else if (this.view.layer === "planete") {
+          this.view.reinitViewUp("systemeSolaire");
+        }
+      }
+    }
+  }
   // --------------------------------------------------------------------------- Keyboard listener -------------------------------------------------------------------
   Keys = {
     up: false,
@@ -179,25 +203,24 @@ export default class App extends Component {
   mouse = new THREE.Vector2(0, 0);
 
   onWheel = (evt) => {
-    var step=10;
-    if(this.view.layer === "univers" ) step = 50;
-    if(this.view.layer === "galaxie") step =20;
-    var value=this.camera.position.z;
+    var step = 10;
+    if (this.view.layer === "univers") step = 50;
+    if (this.view.layer === "galaxie") step = 20;
+    var value = this.camera.position.z;
     // Scrolling up
     if (evt.deltaY < 0) {
-      if(value < 2000)  {
-        value= value+step;
+      if (value < 2000) {
+        value = value + step;
         this.camera.position.z = value;
       }
-  }
-
-  // Scrolling down
-  if(evt.deltaY > 0)  {
-     if(value > 5)  {
-        value = value-step;
+    }
+    // Scrolling down
+    if (evt.deltaY > 0) {
+      if (value > 5) {
+        value = value - step;
         this.camera.position.z = value;
-     }
-  }
+      }
+    }
   }
 
   onMouseMove = (event) => {
@@ -230,10 +253,17 @@ export default class App extends Component {
       if (this.view.obj.planeteUnderMouse !== '') {
         res = "planete";
         this.view.futurObj = this.view.obj.planeteUnderMouse;
+        this.view.obj.planeteUnderMouse = "";
       }
     }
     if (res.length !== 0) {
       this.view.reinitView(res);
+    } else if (event.target.id === "canvas") {
+      if (this.state.display === "none") {
+        this.setState({ display: "" });
+      } else {
+        this.setState({ display: "none" });
+      }
     }
   }
 
@@ -259,224 +289,226 @@ export default class App extends Component {
     else if (kc === 80) this.Keys.rotm = false;
   }
   //-------------------------------------------------------------------SCENE ----------------------------------------------------------------------------------------------
-  scene = new THREE.Scene();
-  views = '';
-  camera = '';
+  
+  
+camera = '';
 
-  componentDidMount() {
-    // on ajoute les events listerner
-    this.mount.addEventListener('mousemove', this.onMouseMove);
-    this.mount.addEventListener('keydown', this.onKeyDown);
-    this.mount.addEventListener('keyup', this.onKeyUp);
-    this.mount.addEventListener('click', this.onClick);
-    this.mount.setAttribute("tabindex", 0);
-    this.mount.addEventListener('wheel',this.onWheel);
+componentDidMount() {
+  // on ajoute les events listerner
+  this.mount.addEventListener('mousemove', this.onMouseMove);
+  this.mount.addEventListener('keydown', this.onKeyDown);
+  this.mount.addEventListener('keyup', this.onKeyUp);
+  this.mount.addEventListener('click', this.onClick);
+  this.mount.setAttribute("tabindex", 0);
+  this.mount.addEventListener('wheel', this.onWheel);
 
-    //camera et ciblage a travers la souris 
-    var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
-    var renderer = new THREE.WebGLRenderer();
-    camera.position.z = 2000;
-    this.camera = camera;
-    const raycaster = new THREE.Raycaster(); //pour le hoover
-    const mouse = new THREE.Vector2();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    // document.body.appendChild( renderer.domElement );
-    // use ref as a mount point of the Three.js scene instead of the document.body
-    this.mount.appendChild(renderer.domElement);
-    raycaster.setFromCamera(mouse, camera);
-    var intersects = raycaster.intersectObjects(this.scene.children);
+  //camera et ciblage a travers la souris 
+  var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
+  var renderer = new THREE.WebGLRenderer();
+  camera.position.z = 2000;
+  this.camera = camera;
+  const raycaster = new THREE.Raycaster(); //pour le hoover
+  const mouse = new THREE.Vector2();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor( 0x000000 );
+  this.mount.appendChild(renderer.domElement);
+  raycaster.setFromCamera(mouse, camera);
+  var intersects = raycaster.intersectObjects(this.scene.children);
 
+  renderer.domElement.id = 'canvas';
+  const Alight = new THREE.AmbientLight('white', 0.4); // soft white light
+  this.scene.add(Alight);
 
-
-    //The X axis is red. The Y axis is green. The Z axis is blue. 
-    //const axesHelper = new THREE.AxesHelper( 125 );
-    //  scene.add( axesHelper );
-    const Alight = new THREE.AmbientLight('white', 0.4); // soft white light
-    this.scene.add(Alight);
-
-    this.view = new Views("univers",this.scene,this.camera,Alight);
+  this.view = new Views("planete", this.scene, this.camera, Alight);
 
 
-    //var planete = new Planete(new ToolBox().generateRandomColor(), 0, 0.2, 1);
-    //planete.DrawPlanete(this.scene);
-    //camera.position.z = 20;
+  //var planete = new Planete(new ToolBox().generateRandomColor(), 0, 0.2, 1);
+  //planete.DrawPlanete(this.scene);
+  //camera.position.z = 20;
 
-    //var tabp = [new Planete(new ToolBox().generateRandomColor(), 15, 0.2, 1), new Planete(new ToolBox().generateRandomColor(), 25, 0.4, 3), new Planete(new ToolBox().generateRandomColor(), 34, 0.1, 1), new Planete(new ToolBox().generateRandomColor(), 49, 0.8, 1), new Planete(new ToolBox().generateRandomColor(), 59, 0.6, 5),];
-    //var ss = new SystemeSolaire("sun", new Position2D(-100, 0), tabp, "yellow", 0.2);
-    //var ss2 = new SystemeSolaire("sun",new Position2D(50,0),tabp,"red",0.5);
-    //ss.DrawSystemeSolaire(this.scene);
-    //ss2.DrawSystemeSolaire(this.scene);
+  //var tabp = [new Planete(new ToolBox().generateRandomColor(), 15, 0.2, 1), new Planete(new ToolBox().generateRandomColor(), 25, 0.4, 3), new Planete(new ToolBox().generateRandomColor(), 34, 0.1, 1), new Planete(new ToolBox().generateRandomColor(), 49, 0.8, 1), new Planete(new ToolBox().generateRandomColor(), 59, 0.6, 5),];
+  //var ss = new SystemeSolaire("sun", new Position2D(-100, 0), tabp, "yellow", 0.2);
+  //var ss2 = new SystemeSolaire("sun",new Position2D(50,0),tabp,"red",0.5);
+  //ss.DrawSystemeSolaire(this.scene);
+  //ss2.DrawSystemeSolaire(this.scene);
 
-    //var galaxie = new Galaxie(new Position2D(-1200, -500), 5, "D2", [], "red");
-    //galaxie.DrawCentre(this.scene);
-    //galaxie.DrawBranchSS(this.scene, new Position2D(-1200, -500), 300, 1);
+  //var galaxie = new Galaxie(new Position2D(-1200, -500), 5, "D2", [], "red");
+  //galaxie.DrawCentre(this.scene);
+  //galaxie.DrawBranchSS(this.scene, new Position2D(-1200, -500), 300, 1);
 
-    //var galaxie2 = new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red");
-    //galaxie2.DrawCentre(this.scene);
-    //galaxie2.DrawBranchSS(this.scene, new Position2D(-1000, 500), 300, 1);
+  //var galaxie2 = new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red");
+  //galaxie2.DrawCentre(this.scene);
+  //galaxie2.DrawBranchSS(this.scene, new Position2D(-1000, 500), 300, 1);
 
-    //var galaxie3 = new Galaxie(new Position2D(0, 350), 5, "D2", [], "red");
-    //galaxie3.DrawCentre(this.scene);
-    //galaxie3.DrawBranchSS(this.scene, new Position2D(0, 350), 300, 1);
+  //var galaxie3 = new Galaxie(new Position2D(0, 350), 5, "D2", [], "red");
+  //galaxie3.DrawCentre(this.scene);
+  //galaxie3.DrawBranchSS(this.scene, new Position2D(0, 350), 300, 1);
 
-    //var galaxie4 = new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red");
-    //galaxie4.DrawCentre(this.scene);
-    //galaxie4.DrawBranchSS(this.scene, new Position2D(1200, -350), 300, 1);
+  //var galaxie4 = new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red");
+  //galaxie4.DrawCentre(this.scene);
+  //galaxie4.DrawBranchSS(this.scene, new Position2D(1200, -350), 300, 1);
 
-    //var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
-    //var univers = new Univers([new Galaxie(new Position2D(1000, 0), 5, "D2", [], "red")]);
-    //univers.initUnivers(this.scene);
-    //this.view = new Views("univers", this.scene, camera, Alight);
+  //var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
+  //var univers = new Univers([new Galaxie(new Position2D(1000, 0), 5, "D2", [], "red")]);
+  //univers.initUnivers(this.scene);
+  //this.view = new Views("univers", this.scene, camera, Alight);
 
-    var hoovered = [];
+  var hoovered = [];
 
 
 
 
-    //la fonction qui boucle
-    var animate = () => {
-      requestAnimationFrame(animate);
-      if (this.Keys.up) {
-        camera.position.y += 1;
+  //la fonction qui boucle
+  var animate = () => {
+    requestAnimationFrame(animate);
+    if (this.Keys.up) {
+      camera.position.y += 10;
+    }
+    else if (this.Keys.down) {  //both up and down does not work so check excl.
+      camera.position.y -= 10;
+    }
+
+    if (this.Keys.left) {
+      camera.position.x -= 10;
+    }
+    else if (this.Keys.right) {
+      camera.position.x += 10;
+    }
+    if (this.Keys.rotm) {
+      camera.position.z += 10;
+    }
+    else if (this.Keys.rotl) {
+      camera.position.z -= 10;
+    }
+    raycaster.setFromCamera(this.mouse, camera);  //on recalcule le ray 
+    intersects = raycaster.intersectObjects(this.scene.children);
+    //gestion du hoover
+    if (this.view.layer === "univers") {
+      var collision = false;
+      var ind = 0;
+      for (var g = 0; g < this.view.obj.tabGal.length; g++) {
+        if (new ToolBox().detectCollision(this.view.obj.tabGal[g], new ToolBox().calculThreeCoord(this.mouse, camera))) {
+          collision = true;
+          ind = g + 0;
+        }
       }
-      else if (this.Keys.down) {  //both up and down does not work so check excl.
-        camera.position.y -= 1;
+      if (collision) {
+        var t = this.view.obj.tabGal[ind].DrawHoover(this.scene);
+        this.setState({ currentObj: this.view.obj.tabGal[ind].tag });
+        if (t !== undefined) {
+          hoovered.push(t);
+        }
+      } else {
+        for (var i = 0; i < hoovered.length; i++) {
+          this.scene.remove(hoovered[i]);
+          this.setState({ currentObj: this.view.layer });
+        }
+        hoovered = [];
+        for (var j = 0; j < this.view.obj.tabGal.length; j++) {
+          this.view.obj.tabGal[j].hoovered = false;
+        }
       }
+      //fin gestion du hoover
+      //gestion du mouvement 
+      if (intersects.length === 0) {
+        for (var x = 0; x < this.view.obj.tabGal.length; x++) {
+          this.view.obj.tabGal[x].MoveGalaxie();
+          for (var y = 0; y < this.view.obj.tabGal[x].tabSS.length; y++) {
+            this.view.obj.tabGal[x].tabSS[y].MoveSystemeSolaire();
+          }
+        }
+      }
+      else {
 
-      if (this.Keys.left) {
-        camera.position.x -= 1;
+        for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
+        }
       }
-      else if (this.Keys.right) {
-        camera.position.x += 1;
+    } else if (this.view.layer === "galaxie") {
+      collision = false;
+      ind = 0;
+      for (g = 0; g < this.view.obj.tabSS.length; g++) {
+        if (new ToolBox().detectCollision(this.view.obj.tabSS[g], new ToolBox().calculThreeCoord(this.mouse, camera))) {
+          collision = true;
+          ind = g + 0;
+        }
       }
-      if (this.Keys.rotm) {
-        camera.position.z += 10;
+      if (collision) {
+        t = this.view.obj.tabSS[ind].DrawHoover(this.scene);
+        console.log(this.view.obj);
+        this.setState({ currentObj: this.view.obj.tabSS[ind].tag });
+        if (t !== undefined) {
+          hoovered.push(t);
+        }
+      } else {
+        for (i = 0; i < hoovered.length; i++) {
+          this.scene.remove(hoovered[i]);
+        }
+        hoovered = [];
+        for (j = 0; j < this.view.obj.tabSS.length; j++) {
+          this.view.obj.tabSS[j].hoovered = false;
+          this.setState({ currentObj: this.view.layer });
+        }
       }
-      else if (this.Keys.rotl) {
-        camera.position.z -= 10;
+      //fin gestion du hoover
+      //gestion du mouvement 
+      if (intersects.length === 0) {
+        for (x = 0; x < this.view.obj.tabSS.length; x++) {
+          this.view.obj.tabSS[x].MoveSystemeSolaire();
+        }
+        this.view.obj.MoveGalaxie();
       }
-      raycaster.setFromCamera(this.mouse, camera);  //on recalcule le ray 
-      intersects = raycaster.intersectObjects(this.scene.children);
-      //gestion du hoover
-      if (this.view.layer === "univers") {
-         var collision = false;
-         var ind = 0;
-         for (var g = 0; g < this.view.obj.tabGal.length; g++) {
-           if (new ToolBox().detectCollision(this.view.obj.tabGal[g], new ToolBox().calculThreeCoord(this.mouse, camera))) {
-             collision = true;
-             ind = g + 0;
-           }
-         }
-         if (collision) {
-           var t = this.view.obj.tabGal[ind].DrawHoover(this.scene);
-           if (t !== undefined) {
-             hoovered.push(t);
-           }
-         } else {
-           for (var i = 0; i < hoovered.length; i++) {
-             this.scene.remove(hoovered[i]);
-           }
-           hoovered = [];
-           for (var j = 0; j < this.view.obj.tabGal.length; j++) {
-             this.view.obj.tabGal[j].hoovered = false;
-           }
-         }
-         //fin gestion du hoover
-         //gestion du mouvement 
-         if (intersects.length === 0) {
-           for (var x = 0; x < this.view.obj.tabGal.length; x++) {
-             this.view.obj.tabGal[x].MoveGalaxie();
-             for (var y = 0; y < this.view.obj.tabGal[x].tabSS.length; y++) {
-               this.view.obj.tabGal[x].tabSS[y].MoveSystemeSolaire();
-             }
-           }
-         }
-         else {
- 
-           for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
-           }
-         }
-       } else if (this.view.layer === "galaxie") {
-         collision = false;
-         ind = 0;
-         for (g = 0; g < this.view.obj.tabSS.length; g++) {
-           if (new ToolBox().detectCollision(this.view.obj.tabSS[g], new ToolBox().calculThreeCoord(this.mouse, camera))) {
-             collision = true;
-             ind = g + 0;
-           }
-         }
-         if (collision) {
-           t = this.view.obj.tabSS[ind].DrawHoover(this.scene);
-           if (t !== undefined) {
-             hoovered.push(t);
-           }
-         } else {
-           for (i = 0; i < hoovered.length; i++) {
-             this.scene.remove(hoovered[i]);
-           }
-           hoovered = [];
-           for (j = 0; j < this.view.obj.tabSS.length; j++) {
-             this.view.obj.tabSS[j].hoovered = false;
-           }
-         }
-         //fin gestion du hoover
-         //gestion du mouvement 
-         if (intersects.length === 0) {
-           for (x = 0; x < this.view.obj.tabSS.length; x++) {
-             this.view.obj.tabSS[x].MoveSystemeSolaire();
-           }
-           this.view.obj.MoveGalaxie();
-         }
-         else {
-           for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
-           }
-         }
-       } else if (this.view.layer === "systemeSolaire") {
-         //gestion du mouvement 
-         if (intersects.length === 0) {
-           this.view.obj.MoveSystemeSolaire();
-         }
-         else {
-           for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
-             this.view.obj.setPlaneteUnderMouse(intersects[0].object);
-           }
-         }
-       } else if (this.view.layer === "planete") {
-         if (intersects.length === 0) {
-           new ToolBox().rotatePlanete(this.view.obj);
-           console.log(this.view.obj);
-         }
-         else {
-           for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
-           }
-         }
-       } 
-      renderer.render(this.scene, camera);
-    };
-    animate();
+      else {
+        for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
+        }
+      }
+    } else if (this.view.layer === "systemeSolaire") {
+      //gestion du mouvement 
+      if (intersects.length === 0) {
+        this.view.obj.MoveSystemeSolaire();
+        this.setState({ currentObj: this.view.layer });
+      }
+      else {
+        for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
+          this.view.obj.setPlaneteUnderMouse(intersects[0].object);
+          this.setState({ currentObj: this.view.obj.getPltunderMouse().tag });
+        }
+      }
+    } else if (this.view.layer === "planete") {
+      if (intersects.length === 0) {
+        new ToolBox().rotatePlanete(this.view.obj);
+      }
+      else {
+        for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
+        }
+      }
+    }
+    renderer.render(this.scene, camera);
+  };
+  animate();
 
-  }
+}
 
-  render() {
-    return (
-      <div ref={ref => (this.mount = ref)} >
-        <Header />
-        <Footer />
-      </div>
-    )
-  }
+render() {
+  return (
+    <div ref={ref => (this.mount = ref)} >
+      <div> <Header display={this.state.display} /></div>
+      <Footer childToParent={this.childToParent} currentObj={this.state.currentObj} />
+    </div>
+  )
+}
 
 
 
 }
 
 class Planete {
-  constructor(couleur, distBySun, vit, taille) {
+  constructor(couleur, distBySun, vit, taille,tag) {
     this.couleur = couleur;
     this.distBySun = distBySun;
     this.vit = vit;
     this.taille = taille;
     this.planete = "";
+    this.tag=tag;
   }
 
   DrawPlanete(scene) { //renvoie l'element de la planete
@@ -492,7 +524,7 @@ class Planete {
 }
 
 class SystemeSolaire {
-  constructor(sun, centre2D, tabP, couleurLight, vit) {
+  constructor(sun, centre2D, tabP, couleurLight, vit,tag) {
     this.sun = sun;
     this.centre2D = centre2D;
     this.tabP = tabP;
@@ -506,10 +538,21 @@ class SystemeSolaire {
     this.hoovered = false;
     this.planeteUnderMouse = '';
     this.initRadius();
+    this.tag=tag;
   }
 
   setPlaneteUnderMouse(plt) {
     this.planeteUnderMouse = plt;
+  }
+
+  getPltunderMouse(){
+    var res='';
+    for(var i=0;i<this.tabP.length;i++){
+      if(this.planeteUnderMouse === this.tabP[i].planete){
+        res = this.tabP[i];
+      }
+    }
+    return res;
   }
 
   initLight(scene) { //deplacer les lumieres ? 
@@ -665,7 +708,7 @@ class SystemeSolaire {
 }
 
 class Galaxie {
-  constructor(centre2D, taille, forme, tabSS, couleurLight) {
+  constructor(centre2D, taille, forme, tabSS, couleurLight,tag) {
     this.centre2D = centre2D;
     this.radius = 0;
     this.taille = taille;
@@ -675,6 +718,7 @@ class Galaxie {
     this.tabEtoile = [];
     this.tabSS = [];
     this.hoovered = false;
+    this.tag=tag;
   }
 
   initRadius() {
@@ -699,7 +743,7 @@ class Galaxie {
     var tabEtoile = [];
     for (var i = 0; i < nb; i++) {
       var pos = tb.generatePointAroudCircle(radius);
-      var p = new Planete("green", pos.x, 0.2, 0.5);
+      var p = new Planete("green", pos.x, 0.2, 0.5,"osef");
       tabEtoile.push(p);
       p = p.DrawPlanete(scene);
       scene.add(p);
@@ -713,7 +757,7 @@ class Galaxie {
     for (var i = 1; i < angleSize; i = i + step) {
       var tb = new ToolBox();
       var pos = tb.generateSpirale(i, startPos);
-      var p = new Planete(new ToolBox().generateRandomColor(), pos.x, 0.2, 0.5).DrawPlanete(scene);
+      var p = new Planete(new ToolBox().generateRandomColor(), pos.x, 0.2, 0.5,"osef").DrawPlanete(scene);
       tabEtoile.push(p);
       scene.add(p);
       p.translateY(pos.y);
@@ -758,7 +802,7 @@ class Galaxie {
     //scene.add(splineObject);
     for (var i = 1; i < angleSize; i = i + step) {
       var pos = tb.generateSpirale(i, startPos);
-      var ss = new SystemeSolaire("sun", new Position2D(this.centre2D.x + pos.x, this.centre2D.y + pos.y), [new Planete(new ToolBox().generateRandomColor(), 15, 0.2, 1), new Planete(new ToolBox().generateRandomColor(), 25, 0.4, 3), new Planete(new ToolBox().generateRandomColor(), 34, 0.1, 1), new Planete(new ToolBox().generateRandomColor(), 49, 0.8, 1), new Planete(new ToolBox().generateRandomColor(), 59, 0.6, 5),], "red", Math.random() * (0.1 - 0.01) + 0.01);
+      var ss = new SystemeSolaire("sun", new Position2D(this.centre2D.x + pos.x, this.centre2D.y + pos.y), [new Planete(new ToolBox().generateRandomColor(), 15, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 25, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 34, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 49, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"), new Planete(new ToolBox().generateRandomColor(), 59, Math.random() * (0.6 - 0.2) + 0.2, new ToolBox().getRandomInt(1,6),"PlaneteId"),], "red", Math.random() * (0.1 - 0.01) + 0.01,"test");
       if ((!this.GetCollision(tabSS, ss)) && (!this.isCollisionCenter(ss))) {
         ss = ss.DrawSystemeSolaire(scene);
         tabSS.push(ss);
