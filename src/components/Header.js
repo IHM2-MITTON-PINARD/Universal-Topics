@@ -25,10 +25,10 @@ function Header(props) {
   
   return (
     <div className="header" style={{display : props.display}}>
-      <a href=""  className='logo' ><img className='imglogo' src={logo} /></a>
+      <img className='imglogo' src={logo} onClick={() => {props.childToParent5(true)}} />
       <h1 className='titre'>Universal Topic</h1>
       <input style={{visibility:display2}} className='id' type="text" placeholder="identifiant" value={idval} onChange={e => setId(e.target.value)} />
-      <input style={{visibility:display2}} className="mdp" type="text" placeholder="mdp" value={mdpval} onChange={e => setMdp(e.target.value)} />
+      <input style={{visibility:display2}} className="mdp" type="password" placeholder="mdp" value={mdpval} onChange={e => setMdp(e.target.value)} />
       <input style={{visibility:display2}} className="connect" type ="button" value="se connecter" onClick={() => { Headline(idval,mdpval)} }/>
       <p style={{display:display}} className="faked" >Bonjour root</p>
     </div>

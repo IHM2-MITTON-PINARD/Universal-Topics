@@ -10,6 +10,9 @@
 }
 .imglogo{
     max-width: 120px;
+    justify-self: stretch;
+    grid-column : 2;
+    grid-row :1; 
 }
 .logo{
     justify-self: stretch;

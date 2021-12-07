@@ -1,0 +1,83 @@
+.message{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: 1fr 1fr;
+    border : 1px solid black;
+    border-radius: 5%;
+    max-height: 100px;
+    background-color: rgba(235, 246, 250, 0.658);
+    margin-left : 1%;
+    margin-right : 1%;
+    margin-bottom: 2%;
+}
+
+.up{
+    justify-self: center;
+    width:20%;
+    align-self: start;
+    grid-column: 1;
+    grid-row-start :1;
+    grid-row-end: 1;
+}
+
+.vizUp{
+    text-align: center;
+    align-self: end;
+    grid-column: 1;
+    grid-row-start :1;
+    grid-row-end: 1;
+}
+
+.down{
+    justify-self: center;
+    width:20%;
+    align-self: start;
+    grid-column: 1;
+    grid-row-start :2;
+    grid-row-end: 2;
+}
+
+.vizDown{
+    text-align: center;
+    align-self: end;
+    grid-column: 1;
+    grid-row-start :2;
+    grid-row-end: 2;
+}
+.msg{
+    padding-left : 2%;
+    overflow-y: scroll;
+    min-height: 80px;
+    max-height: 80px;
+    border : 1px grey solid;
+    align-self: end;
+    grid-column-start: 2;
+    grid-column-end : 6;
+    grid-row-start : 1;
+    grid-row-end: 3;
+}
+
+.pouce1{
+    max-height: 15px;
+    grid-column: 1;
+    grid-row-start :1;
+    grid-row-end: 1;
+    align-self: end;
+    justify-self: right;
+    padding-right : 10%;
+    padding-bottom : 3%;
+
+}
+.pouce2{
+    max-height: 15px;
+    grid-column: 1;
+    grid-row-start :2;
+    grid-row-end: 2;
+    align-self: end;
+    justify-self: right;
+    padding-left : 10%;
+    padding-bottom : 3%;
+    transform: rotate(180deg);
+
+}
+

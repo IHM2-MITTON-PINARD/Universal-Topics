@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Mono&display=swap');
+
+.title{
+    text-align: center;
+    font-family: 'Space Mono';
+}
+
+.msgBox{
+    font-family: 'Space Mono';
+    overflow-y: scroll;
+    max-height: 350px;
+}
+
+.sendBox{
+    font-family: 'Space Mono';
+    margin-left : 1%;
+    margin-top: 2%;
+    min-height: 60px;
+}
+
+.chattext{
+    font-family: 'Space Mono';
+    min-width: 450px;
+    min-height: 50px;
+}
+
+.chatbox{
+    font-family: 'Space Mono';
+    background:linear-gradient(#2f2a5e 70%, #9198e5);
+}

@@ -1,0 +1,122 @@
+.createtopic{
+    display:grid;
+    grid-template-columns: repeat(5,100px);
+    grid-template-rows: 60px 30px repeat(7,60px);
+    font-family: 'Space Mono';
+    background:linear-gradient(#2f2a5e 70%, #9198e5);
+}
+.closeSub{
+    align-self: center;
+    text-align: center;
+    grid-column-start: 5;
+    grid-column-end : 6;
+    grid-row-start : 1;
+    grid-row-end: 1;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.closeSub:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.subTitle{
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end : 6;
+    grid-row-start : 1;
+    grid-row-end: 1;
+    border : 2px black solid;
+}
+
+.primtxt{
+    align-self: center;
+    grid-column-start: 2;
+    grid-column-end : 2;
+    grid-row-start : 3;
+    grid-row-end: 3;
+}
+
+.primselect{
+    align-self: center;
+    max-height: 50%;
+    grid-column-start: 3;
+    grid-column-end : 5;
+    grid-row-start : 3;
+    grid-row-end: 3;
+}
+
+.sectxt{
+    align-self: center;
+    grid-column-start: 2;
+    grid-column-end : 2;
+    grid-row-start : 5;
+    grid-row-end: 5;
+}
+
+.secselect{
+    align-self: center;
+    max-height: 50%;
+    grid-column-start: 3;
+    grid-column-end : 5;
+    grid-row-start : 5;
+    grid-row-end: 5;
+}
+
+.subtxt{
+    align-self: center;
+    grid-column-start: 2;
+    grid-column-end : 2;
+    grid-row-start : 7;
+    grid-row-end: 7;
+}
+
+.subInput{
+    align-self: center;
+    max-height: 30px;
+    min-height: 30px;
+    grid-column-start: 3;
+    grid-column-end : 5;
+    grid-row-start : 7;
+    grid-row-end: 7;
+}
+
+.subCreate{
+    max-height: 30px;
+    min-height: 30px;
+    grid-column-start: 3;
+    grid-column-end : 3;
+    grid-row-start : 9;
+    grid-row-end: 9;
+}
+
+.div1{
+    margin-right : 10%;
+    margin-left : 10%;
+    grid-column-start: 1;
+    grid-column-end : 6;
+    grid-row-start : 3;
+    grid-row-end: 3;
+    background-color: rgba(235, 246, 250, 0.658);
+}
+
+.div2{
+    margin-right : 10%;
+    margin-left : 10%;
+    grid-column-start: 1;
+    grid-column-end : 6;
+    grid-row-start : 5;
+    grid-row-end: 5;
+    background-color: rgba(235, 246, 250, 0.658);
+}
+
+.div3{
+    margin-right : 10%;
+    margin-left : 10%;
+    grid-column-start: 1;
+    grid-column-end : 6;
+    grid-row-start : 7;
+    grid-row-end: 7;
+    background-color: rgba(235, 246, 250, 0.658);
+}
