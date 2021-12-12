@@ -23,6 +23,11 @@ class Views {
     this.oldObj = "";
   }
 
+  /**
+   * 
+   * @param {string} layer 
+   * modifie la view en descente
+   */
   reinitView(layer) {
     this.scene.clear();
     this.layer = layer;
@@ -30,12 +35,22 @@ class Views {
     this.obj = this.downObj();
   }
 
+  /**
+   * 
+   * @param {string} layer 
+   * modifie al view en monter
+   */
   reinitViewUp(layer) {
     this.scene.clear();
     this.layer = layer;
     this.obj = this.upObj();
   }
 
+  /**
+   * 
+   * @returns obj
+   * initialise le nouvel obj en monter de la view et le renvoie
+   */
   upObj() {
     if (this.layer === "univers") {
       var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red", "politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red", "ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red", "informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red", "gaming")]);
@@ -68,6 +83,11 @@ class Views {
     }
   }
 
+  /**
+   * 
+   * @returns obj
+   * initialise le nouvel obj en descente de la view et le return 
+   */
   downObj() {
     if (this.layer === "univers") {
       var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red", "politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red", "ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red", "informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red", "gaming")]);
@@ -110,6 +130,11 @@ class Views {
     }
   }
 
+  /**
+   * 
+   * @returns obj
+   * initialise une view par rapport a un layer specifique
+   */
   initObj() {
     if (this.layer === "univers") {
       var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red", "politique"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red", "ecologie"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red", "informatique"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red", "gaming")]);
@@ -148,13 +173,6 @@ class Views {
       return "ntm";
     }
   }
-  setLayer(layer) {
-    this.layer = layer;
-  }
-
-  setObj(obj) {
-    this.obj = obj;
-  }
 }
 
 
@@ -170,45 +188,69 @@ export default class App extends Component {
 
   view = '';
 
+  /**
+   * 
+   * @param {boolean} childData 
+   * callback fct for hud component "createTopic"
+   */
   childToParent3 = (childData) => {
-    if(childData) {
-      this.setState({topic:"none"});
+    if (childData) {
+      this.setState({ topic: "none" });
     }
   }
 
+  /**
+   * 
+   * @param {boolean} childData 
+   * callback fct for hud component "header"
+   */
   childToParent5 = (childData) => {
-    if(childData){
+    if (childData) {
       var res = "univers";
       this.view.wayInsideObj = [];
       this.view.reinitView(res);
     }
   }
 
+  /**
+   * 
+   * @param {string} childData 
+   * callback fct for hud component "searchBar"
+   */
   childToParent4 = (childData) => {
-    var res='';
-    if(childData === "javascript"){
+    var res = '';
+    if (childData === "javascript") {
       res = "systemeSolaire";
       this.view.wayInsideObj = [];
       this.view.obj = this.view.univers.tabGal[2];
       this.view.futurObj = this.view.univers.tabGal[2].tabSS[2];
       this.view.reinitView(res);
-    }else if(childData === "input"){
-      res= "planete";
-      this.view.wayInsideObj= [];
+    } else if (childData === "input") {
+      res = "planete";
+      this.view.wayInsideObj = [];
       this.view.wayInsideObj.push(this.view.univers.tabGal[2]);
       this.view.obj = this.view.univers.tabGal[2].tabSS[2];
       this.view.futurObj = this.view.univers.tabGal[2].tabSS[2].tabP[1].planete;
-      this.setState({currentObj:"Input type='txt'"})
+      this.setState({ currentObj: "Input type='txt'" })
       this.view.reinitView(res);
     }
   }
- 
+  /**
+    * 
+    * @param {boolean} childData 
+    * callback fct for hud component "footer"
+    */
   childToParent2 = (childData) => {
     if (childData) {
       this.setState({ topic: "" });
     }
   }
 
+  /**
+   * 
+   * @param {boolean} childData 
+   * callback fct for hud component "footer"
+   */
   childToParent = (childData) => {
     if (childData) {
       if (this.view.layer !== "univers") {
@@ -234,6 +276,11 @@ export default class App extends Component {
 
   mouse = new THREE.Vector2(0, 0);
 
+  /**
+   * 
+   * @param {*} evt 
+   * gere le zoom par rapport au layer de la view
+   */
   onWheel = (evt) => {
     var step = 10;
     if (this.view.layer === "univers") step = 50;
@@ -241,14 +288,14 @@ export default class App extends Component {
     if (this.view.layer === "planete") step = 0;
     var value = this.camera.position.z;
     // Scrolling up
-    if (evt.deltaY < 0) {
+    if (evt.deltaY > 0) {
       if (value < 2000) {
         value = value + step;
         this.camera.position.z = value;
       }
     }
     // Scrolling down
-    if (evt.deltaY > 0) {
+    if (evt.deltaY < 0) {
       if (value > 5) {
         value = value - step;
         this.camera.position.z = value;
@@ -256,9 +303,12 @@ export default class App extends Component {
     }
   }
 
+  /**
+   * 
+   * @param {*} event 
+   * gere la position de la souris selon l'ecran et selon la scene
+   */
   onMouseMove = (event) => {
-    // calculate mouse position in normalized device coordinates
-    // (-1 to +1) for both components
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     this.mouse.xNat = event.clientX;
@@ -266,6 +316,11 @@ export default class App extends Component {
 
   }
 
+  /**
+   * 
+   * @param {*} event 
+   * gere les click en fonction de leur zone de click
+   */
   onClick = (event) => {
     if (event.target.id === "canvas") {
       var res = '';
@@ -301,18 +356,26 @@ export default class App extends Component {
       }
     }
   }
-
+  /**
+   * 
+   * @param {*} event 
+   * gere les appuients de touche
+   */
   onKeyDown = (event) => {
     var kc = event.keyCode;
 
-    if (kc === 37) this.Keys.left = true;  //only one key per event
-    else if (kc === 38) this.Keys.up = true;    //so check exclusively
+    if (kc === 37) this.Keys.left = true;
+    else if (kc === 38) this.Keys.up = true;
     else if (kc === 39) this.Keys.right = true;
     else if (kc === 40) this.Keys.down = true;
     else if (kc === 76) this.Keys.rotl = true;
     else if (kc === 80) this.Keys.rotm = true;
   }
-
+  /**
+   * 
+   * @param {*} event 
+   * gere les appuients de touche
+   */
   onKeyUp = (event) => {
     var kc = event.keyCode;
 
@@ -354,44 +417,9 @@ export default class App extends Component {
     const Alight = new THREE.AmbientLight('white', 0.4); // soft white light
     this.scene.add(Alight);
 
-    this.view = new Views("univers", this.scene, this.camera, Alight);
-
-
-    //var planete = new Planete(new ToolBox().generateRandomColor(), 0, 0.2, 1);
-    //planete.DrawPlanete(this.scene);
-    //camera.position.z = 20;
-
-    //var tabp = [new Planete(new ToolBox().generateRandomColor(), 15, 0.2, 1), new Planete(new ToolBox().generateRandomColor(), 25, 0.4, 3), new Planete(new ToolBox().generateRandomColor(), 34, 0.1, 1), new Planete(new ToolBox().generateRandomColor(), 49, 0.8, 1), new Planete(new ToolBox().generateRandomColor(), 59, 0.6, 5),];
-    //var ss = new SystemeSolaire("sun", new Position2D(-100, 0), tabp, "yellow", 0.2);
-    //var ss2 = new SystemeSolaire("sun",new Position2D(50,0),tabp,"red",0.5);
-    //ss.DrawSystemeSolaire(this.scene);
-    //ss2.DrawSystemeSolaire(this.scene);
-
-    //var galaxie = new Galaxie(new Position2D(-1200, -500), 5, "D2", [], "red");
-    //galaxie.DrawCentre(this.scene);
-    //galaxie.DrawBranchSS(this.scene, new Position2D(-1200, -500), 300, 1);
-
-    //var galaxie2 = new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red");
-    //galaxie2.DrawCentre(this.scene);
-    //galaxie2.DrawBranchSS(this.scene, new Position2D(-1000, 500), 300, 1);
-
-    //var galaxie3 = new Galaxie(new Position2D(0, 350), 5, "D2", [], "red");
-    //galaxie3.DrawCentre(this.scene);
-    //galaxie3.DrawBranchSS(this.scene, new Position2D(0, 350), 300, 1);
-
-    //var galaxie4 = new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red");
-    //galaxie4.DrawCentre(this.scene);
-    //galaxie4.DrawBranchSS(this.scene, new Position2D(1200, -350), 300, 1);
-
-    //var univers = new Univers([new Galaxie(new Position2D(-1400, -500), 5, "D2", [], "red"), new Galaxie(new Position2D(-1000, 500), 5, "D2", [], "red"), new Galaxie(new Position2D(200, 350), 5, "D2", [], "red"), new Galaxie(new Position2D(1200, -350), 5, "D2", [], "red")]);
-    //var univers = new Univers([new Galaxie(new Position2D(1000, 0), 5, "D2", [], "red")]);
-    //univers.initUnivers(this.scene);
-    //this.view = new Views("univers", this.scene, camera, Alight);
+    this.view = new Views("univers", this.scene, this.camera, Alight); // on initialise la view 
 
     var hoovered = [];
-
-
-
 
     //la fonction qui boucle
     var animate = () => {
@@ -408,12 +436,6 @@ export default class App extends Component {
       }
       else if (this.Keys.right) {
         camera.position.x += 10;
-      }
-      if (this.Keys.rotm) {
-        camera.position.z += 10;
-      }
-      else if (this.Keys.rotl) {
-        camera.position.z -= 10;
       }
       raycaster.setFromCamera(this.mouse, camera);  //on recalcule le ray 
       intersects = raycaster.intersectObjects(this.scene.children);
@@ -444,8 +466,6 @@ export default class App extends Component {
             this.view.obj.tabGal[j].hoovered = false;
           }
         }
-        //fin gestion du hoover
-        //gestion du mouvement 
         if (intersects.length === 0) {
           for (var x = 0; x < this.view.obj.tabGal.length; x++) {
             this.view.obj.tabGal[x].MoveGalaxie();
@@ -484,8 +504,6 @@ export default class App extends Component {
             this.setState({ currentObj: this.view.layer });
           }
         }
-        //fin gestion du hoover
-        //gestion du mouvement 
         if (intersects.length === 0) {
           for (x = 0; x < this.view.obj.tabSS.length; x++) {
             this.view.obj.tabSS[x].MoveSystemeSolaire();
@@ -505,8 +523,10 @@ export default class App extends Component {
         }
         else {
           for (let i = 0; i < intersects.length; i++) {  //regarde pour chaque objet si on est dessus
-            this.view.obj.setPlaneteUnderMouse(intersects[0].object);
-            this.setState({ currentObj: this.view.obj.getPltunderMouse().tag });
+            if (intersects[0].object.name !== "sun") {
+              this.view.obj.setPlaneteUnderMouse(intersects[0].object);
+              this.setState({ currentObj: this.view.obj.getPltunderMouse().tag });
+            }
           }
         }
       } else if (this.view.layer === "planete") {
@@ -529,9 +549,9 @@ export default class App extends Component {
     return (
       <div ref={ref => (this.mount = ref)} >
         <div> <Header childToParent5={this.childToParent5} display={this.state.display} /></div>
-        <SearchBar childToParent4={this.childToParent4}/>
+        <SearchBar childToParent4={this.childToParent4} />
         <ChatBox title={this.state.currentObj} display={this.state.ChatBox} />
-        <CreateTopic display={this.state.topic}  childToParent3={this.childToParent3}/>
+        <CreateTopic display={this.state.topic} childToParent3={this.childToParent3} />
         <Footer childToParent2={this.childToParent2} childToParent={this.childToParent} currentObj={this.state.currentObj} />
       </div>
     )
@@ -551,7 +571,13 @@ class Planete {
     this.tag = tag;
   }
 
-  DrawPlanete(scene) { //renvoie l'element de la planete
+  /**
+   * 
+   * @param {*} scene 
+   * @returns obj
+   * creer et ajoute a la scene une planete
+   */
+  DrawPlanete(scene) {
     var geometry = new THREE.SphereGeometry(this.taille, 32, 16);
     var material = new THREE.MeshPhongMaterial({ color: this.couleur });
     var planete = new THREE.Mesh(geometry, material);
@@ -580,11 +606,20 @@ class SystemeSolaire {
     this.initRadius();
     this.tag = tag;
   }
-
+  /**
+   * 
+   * @param {THREE.obj} plt 
+   * permet de stocker la valeur de la planete sous le raycaster
+   */
   setPlaneteUnderMouse(plt) {
     this.planeteUnderMouse = plt;
   }
 
+  /**
+   * 
+   * @returns Planete
+   * recupere et retourne la valeur de l'objet planete pour l'objet three.js stocké
+   */
   getPltunderMouse() {
     var res = '';
     for (var i = 0; i < this.tabP.length; i++) {
@@ -594,7 +629,11 @@ class SystemeSolaire {
     }
     return res;
   }
-
+  /**
+   * 
+   * @param {*} scene 
+   * genere les lumieres d'un systeme solaire
+   */
   initLight(scene) { //deplacer les lumieres ? 
     var light = new THREE.PointLight('white', 1.4, 100);
     light.position.set(this.centre2D.x + this.sunLength + 1, this.centre2D.y, 0);
@@ -621,7 +660,9 @@ class SystemeSolaire {
     scene.add(light5);
     this.tabLight.push(light5);
   }
-
+  /**
+   * fait se deplacer les planetes d'un systeme solaire selon le centre de celui ci
+   */
   MoveSystemeSolaire() {
     var axes = new THREE.Vector3(0, 0, 1);
     var tb = new ToolBox();
@@ -632,7 +673,12 @@ class SystemeSolaire {
       tb.rotateAboutPoint(this.tabLight[j], new THREE.Vector3(this.centre2D.x, this.centre2D.y, 0), axes, this.tabP[0].vit * Math.PI / 180, "");
     }
   }
-
+  /**
+   * 
+   * @param {SystemeSolaire} ss 
+   * @returns boolean
+   * return true si le systemsolaire en parametre est en collision avec le centre
+   */
   GetCollision(ss) {
     if (ss === undefined) {
       return false;
@@ -649,7 +695,12 @@ class SystemeSolaire {
       }
     }
   }
-
+  /**
+   * 
+   * @param {*} scene 
+   * @returns SystemSolaire
+   * creer et ajoute a la scene un systeme solaire
+   */
   DrawSystemeSolaire(scene) {
     var planete;
     this.sun = this.DrawSun(scene);
@@ -666,7 +717,12 @@ class SystemeSolaire {
     this.initLight(scene);
     return this;
   }
-
+  /**
+   * 
+   * @param {*} scene 
+   * @returns Three.obj
+   * creer et ajoute un soleil au systeme solaire
+   */
   DrawSun(scene) {
     var taille = 0;
     for (var i = 0; i < this.tabP.length; i++) {
@@ -678,22 +734,15 @@ class SystemeSolaire {
     var sgeometry = new THREE.SphereGeometry(taille, 32, 16);
     var smaterial = new THREE.MeshPhongMaterial({ color: 'yellow' });
     var soleil = new THREE.Mesh(sgeometry, smaterial);
+    soleil.name = "sun";
     scene.add(soleil);
     soleil.translateX(this.centre2D.x);
     soleil.translateY(this.centre2D.y);
     return soleil;
   }
-
-  DrawRing(taille, position2D, scene) {
-    var rgeometry = new THREE.RingGeometry(taille - 0.1, taille, 30, 15, 0, 6.3);
-    var rmaterial = new THREE.MeshPhongMaterial({ color: 0xffff00, side: THREE.DoubleSide });
-    var ring = new THREE.Mesh(rgeometry, rmaterial);
-    scene.add(ring);
-    ring.translateX(position2D.x);
-    ring.translateY(position2D.y);
-    return ring;
-  }
-
+  /**
+   * Calcul la taille du radius du systeme solaire
+   */
   initRadius() {
     for (var i = 0; i < this.tabP.length; i++) {
       if (this.tabP[i].distBySun > this.radius - this.tabP[i].taille) {
@@ -701,7 +750,11 @@ class SystemeSolaire {
       }
     }
   }
-
+  /**
+   * 
+   * @param {int} x 
+   * permet de translater selon l'axe x un systeme solaire entier
+   */
   TranslateX(x) {
     this.sun.translateX(x);
     for (var i = 0; i < this.SystemeSolairePlanete.length; i++) {
@@ -711,7 +764,11 @@ class SystemeSolaire {
       this.SystemeSolaireRing[j].translateX(x);
     }
   }
-
+  /**
+   * 
+   * @param {int} y 
+   * permet de translater selon l'axe y un systeme solaire entier
+   */
   TranslateY(y) {
     this.sun.translateY(y);
     for (var i = 0; i < this.SystemeSolairePlanete.length; i++) {
@@ -721,7 +778,11 @@ class SystemeSolaire {
       this.SystemeSolaireRing[j].translateY(y);
     }
   }
-
+  /**
+   * 
+   * @param {Position2D} center 
+   * fais tourner autour d'un point le systeme solaire entier 
+   */
   RotateAboutPointSS(center) {
     var axes = new THREE.Vector3(0, 0, 1);
     var tb = new ToolBox();
@@ -730,7 +791,12 @@ class SystemeSolaire {
       tb.rotateAboutPoint(this.SystemeSolairePlanete[i], new THREE.Vector3(center.x, center.y, 0), axes, this.vit * Math.PI / 180, "");
     }
   }
-
+  /**
+   * 
+   * @param {*} scene 
+   * @returns Three.obj
+   * creer et affiche le hoovering 
+   */
   DrawHoover(scene) {
     if (!this.hoovered) {
       var geometry = new THREE.CircleGeometry(this.radius, 32);
@@ -760,11 +826,18 @@ class Galaxie {
     this.hoovered = false;
     this.tag = tag;
   }
-
+/**
+ * determine le radius d'une galaxie
+ */
   initRadius() {
     this.radius = new ToolBox().DistanceEntreDeuxpoint(this.centre2D, this.tabSS[this.tabSS.length - 1].centre2D) + this.tabSS[this.tabSS.length - 1].radius + 100;
   }
-
+/**
+ * 
+ * @param {*} scene 
+ * @returns Three.obj
+ * creer et affiche le soleil d'une galaxie 
+ */
   DrawCentre(scene) {
     var cgeometry = new THREE.SphereGeometry(30, 32, 16);
     var cmaterial = new THREE.MeshPhongMaterial({ color: 'yellow' });
@@ -777,35 +850,13 @@ class Galaxie {
     scene.add(light5);
     return centre;
   }
-
-  DrawCirclePlanete(scene, radius, nb) {
-    var tb = new ToolBox();
-    var tabEtoile = [];
-    for (var i = 0; i < nb; i++) {
-      var pos = tb.generatePointAroudCircle(radius);
-      var p = new Planete("green", pos.x, 0.2, 0.5, "osef");
-      tabEtoile.push(p);
-      p = p.DrawPlanete(scene);
-      scene.add(p);
-      p.translateY(pos.y);
-    }
-    return tabEtoile;
-  }
-
-  DrawBranchPlanete(scene, startPos, angleSize, step) {
-    var tabEtoile = [];
-    for (var i = 1; i < angleSize; i = i + step) {
-      var tb = new ToolBox();
-      var pos = tb.generateSpirale(i, startPos);
-      var p = new Planete(new ToolBox().generateRandomColor(), pos.x, 0.2, 0.5, "osef").DrawPlanete(scene);
-      tabEtoile.push(p);
-      scene.add(p);
-      p.translateY(pos.y);
-    }
-    this.tabEtoile = tabEtoile;
-    return tabEtoile;
-  }
-
+/**
+ * 
+ * @param {SystemeSolaire[]} tab 
+ * @param {SystemeSolaire} ss 
+ * @returns boolean
+ * return true si le systeme solaire ss est actuellement en collision avec un systeme solaire du tableau tab
+ */
   GetCollision(tab, ss) {
     var res = false;
     for (var i = 0; i < tab.length; i++) {
@@ -815,7 +866,12 @@ class Galaxie {
     }
     return res;
   }
-
+/**
+ * 
+ * @param {SystemeSolaire} ss 
+ * @returns boolean
+ * return true si le systeme solaire ss est en collision avec le centre de la galaxie
+ */
   isCollisionCenter(ss) {
     var dx = ss.centre2D.x - this.centre2D.x;
     var dy = ss.centre2D.y - this.centre2D.y;
@@ -827,10 +883,18 @@ class Galaxie {
       return false;
     }
   }
-
+/**
+ * 
+ * @param {*} scene 
+ * @param {Position2D} startPos 
+ * @param {int} angleSize 
+ * @param {int} step 
+ * @returns SystemeSolaire[]
+ * initialise et affiche l'ensemble des systemes solaires compris dans une galaxie
+ */
   DrawBranchSS(scene, startPos, angleSize, step) {
-    var fakeData =["angular","react","javascript","threejs","ember","svelte","native-script","typescript","react-spring","quasar","ionic","java","python","ia","symfony","laravel","php"];
-    var pltFakeData = ["Comment hover ?","Input type='txt'","Comment import une image ?","Math.random ? ","Faire une copie d'un array ?","opérateur '===' ou '==' ?" ];
+    var fakeData = ["angular", "react", "javascript", "threejs", "ember", "svelte", "native-script", "typescript", "react-spring", "quasar", "ionic", "java", "python", "ia", "symfony", "laravel", "php"];
+    var pltFakeData = ["Comment hover ?", "Input type='txt'", "Comment import une image ?", "Math.random ? ", "Faire une copie d'un array ?", "opérateur '===' ou '==' ?"];
     var tabSS = [];
     var tb = new ToolBox();
     var curveTab = [];
@@ -847,22 +911,29 @@ class Galaxie {
         ss.tag = fakeData[nb];
         tabSS.push(ss);
         ss.TranslateY(pos.y);
-        nb = nb+1;
+        nb = nb + 1;
       }
-      
+
     }
     this.tabSS = tabSS;
     this.initRadius();
     return tabSS;
   }
 
-
+/**
+ * permet de faire tourner l'ensemble des sytemes solaire autour du centre de la galaxie
+ */
   MoveGalaxie() {
     for (var i = 0; i < this.tabSS.length; i++) {
       this.tabSS[i].RotateAboutPointSS(this.centre2D);
     }
   }
-
+/**
+ * 
+ * @param {*} scene 
+ * @returns Three.obj
+ * Dessine le hoover d'une galaxie
+ */
   DrawHoover(scene) {
     if (!this.hoovered) {
       var geometry = new THREE.CircleGeometry(this.radius, 32);
@@ -883,7 +954,11 @@ class Univers {
   constructor(tabGal) {
     this.tabGal = tabGal;
   }
-
+/**
+ * 
+ * @param {*} scene 
+ * creer et affiche un univers 
+ */
   initUnivers(scene) {
     for (var i = 0; i < this.tabGal.length; i++) {
       this.tabGal[i].DrawCentre(scene);
@@ -918,40 +993,60 @@ class ToolBox {
     return new Position2D(obj.position.x, obj.position.y);
   }
 
-  //creer des points aleatoires a la periphérie d'un cercle 2d
-  generatePointAroudCircle(radius) {
-    var angle = Math.random() * Math.PI * 2;
-    var x = Math.cos(angle) * radius;
-    var y = Math.sin(angle) * radius;
-    return (new Position2D(x, y));
-  }
-
+/**
+ * 
+ * @param {int} angleSize 
+ * @returns Position2D
+ * permet de generer les points d'une spirale de euler
+ */
   generateSpirale(angleSize) { //angleSize a utilisé dans une boucle 360 ou 720 etc 
     var angle = (Math.random() * angleSize + 10);
     var x = (angle) * Math.cos(angle);
     var y = (angle) * Math.sin(angle);
     return new Position2D(x, y)
   }
-
+/**
+ * 
+ * @param {int} angleSize 
+ * @param {int} startPos 
+ * @returns Position2D
+ * permet de genere des points en fonction d'une position de depart selon une spirale de euler
+ */
   generateSpiralePoint(angleSize, startPos) { //angleSize a utilisé dans une boucle 360 ou 720 etc 
     var angle = 0.1 * angleSize;
     var x = (startPos.x + angle) * Math.cos(angle);
     var y = (startPos.y + angle) * Math.sin(angle);
     return new Position2D(x, y)
   }
-
+/**
+ * 
+ * @returns string
+ * return une couleur au hasard
+ */
   generateRandomColor() {
     var c = ['purple', 'blue', 'red', 'green', 'darkorange', 'pink', 'brown']
     var r = new ToolBox().getRandomInt(0, 6);
     return c[r];
   }
-
+/**
+ * 
+ * @param {int} min 
+ * @param {int} max 
+ * @returns int
+ * renvoie un entier aleatoire compris entre min et max inclus
+ */
   getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
-
+/**
+ * 
+ * @param {Galaxie} galaxie 
+ * @param {Position2D} mouse 
+ * @returns boolean
+ * renvoie vrai si la position de X est à l'interieur du radius de la galaxie
+ */
   detectCollision(galaxie, mouse) {
     if (mouse !== undefined) {
       var dx = galaxie.centre2D.x - mouse.x;
@@ -966,7 +1061,13 @@ class ToolBox {
       }
     }
   }
-
+/**
+ * 
+ * @param {Position2D} mouse 
+ * @param {*} camera 
+ * @returns Position2D
+ * permet de calculer les coordonnées dans un autre systeme de visualisation que celui de l'eventHandler a fin de les faires correspondre a celle de three.js
+ */
   calculThreeCoord(mouse, camera) {
     var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
     vector.unproject(camera);
@@ -975,15 +1076,30 @@ class ToolBox {
     var pos = camera.position.clone().add(dir.multiplyScalar(distance));
     return pos;
   }
-
+/**
+ * 
+ * @param {int} a 
+ * @returns int
+ * fonction ^2
+ */
   sqr(a) {
     return a * a;
   }
-
+/**
+ * 
+ * @param {Position2D} coord1 
+ * @param {Position2D} coord2 
+ * @returns int
+ * renvoie la distance entre deux points dans un espace 2D
+ */
   DistanceEntreDeuxpoint(coord1, coord2) {
     return Math.sqrt(this.sqr(coord2.y - coord1.y) + this.sqr(coord2.x - coord1.x));
   }
-
+/**
+ * 
+ * @param {Three.obj} obj
+ * fais rotationner un objet Three.js sur lui même 
+ */
   rotatePlanete(obj) {
     obj.rotation.x += 0.01;
     obj.rotation.y += 0.01;
